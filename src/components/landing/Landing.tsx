@@ -1,6 +1,8 @@
 import React from 'react';
 import { Row, Col, InputGroup, FormControl, Button, Card } from 'react-bootstrap';
 import InventoryList from '../InventoryList/InventoryList';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../services/rootReducer';
 
 type LandingState = {
   searchText: string,
