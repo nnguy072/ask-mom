@@ -1,78 +1,68 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { login, LoginModel, testLogin } from '../../services/auth';
-import { useDispatch } from 'react-redux';
-
-type LoginProps = {
-}
+import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { login, LoginModel } from '../../services/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../services/rootReducer';
 
 type LoginState = {
   email: string;
   password: string;
 }
 
-export default class Login extends React.PureComponent<LoginProps, LoginState> {
-  constructor(props: LoginProps) {
-    super(props);
+const Login: React.FC = () => {
+  const [formData, setFormData] = useState<LoginState>({
+    email: '',
+    password: ''
+  });
+  
+  const { isAuthenticated } = useSelector((state: RootState) => state.Auth);
+  const { email, password } = formData;
+  const dispatch = useDispatch();
 
-    this.state = {
-      email: '',
-      password: ''
-    };
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });
+	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+		dispatch(login(new LoginModel(email, password)));
+	};
 
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
+  // redirect if logged in
+	if (isAuthenticated)
+		return <Redirect to='/landing' />;
 
-  private onSubmit(event: React.ChangeEvent<HTMLFormElement>): void {
-    event.preventDefault();
-
-    console.log('here?');
-
-    testLogin();
-    // dispatch(login(new LoginModel(this.state.email, this.state.password)));
-  }
-
-  private onChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    event.preventDefault();
-    
-    this.setState({ [event.target.name]: event.target.value } as LoginState);
-  }
-
-  render(): JSX.Element {
-    return (
-      <React.Fragment>
-        <h1 className='large text-primary'>Sign In</h1>
-        <p className='lead'>
-          <i className='fas fa-user'></i> Sign Into Your Account
+  return (
+    <React.Fragment>
+      <h1 className='large text-primary'>Sign In</h1>
+      <p className='lead'>
+        <i className='fas fa-user'></i> Sign Into Your Account
         </p>
-			<form className='form' onSubmit={this.onSubmit}>
-          <div className='form-group'>
-            <input
-              type='email'
-              placeholder='Email Address'
-              name='email'
-              value={this.state.email}
-              required
-              onChange={this.onChange}
-            />
-          </div>
-          <div className='form-group'>
-            <input
-              type='password'
-              placeholder='Password'
-              name='password'
-              value={this.state.password}
-              required
-              onChange={this.onChange}
-            />
-          </div>
-          <input type='submit' className='btn btn-primary' value='Login' />
-        </form>
-        <p className='my-1'>
-          Don't have an account? <Link to='/register'> Register</Link>
-        </p>
-      </React.Fragment>
-    );
-  }
+      <form className='form' onSubmit={e => onSubmit(e)}>
+        <div className='form-group'>
+          <input
+            type='email'
+            placeholder='Email Address'
+            name='email'
+            value={email}
+            required
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <div className='form-group'>
+          <input
+            type='password'
+            placeholder='Password'
+            name='password'
+            value={password}
+            required
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <input type='submit' className='btn btn-primary' value='Login' />
+      </form>
+      <p className='my-1'>
+        Don't have an account? <Link to='/register'> Register</Link>
+      </p>
+    </React.Fragment>
+  );
 }
+
+export default Login;

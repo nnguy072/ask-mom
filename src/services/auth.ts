@@ -20,33 +20,31 @@ let initialState: AuthState = {
 
 // a lot of repeats in this can't figure out syntax to not do repeats
 const authSlice = createSlice({
-    name: 'Auth',
-    initialState: initialState,
-    reducers: {
-      handleLoadUser: (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload;
-      },
-      handleLogin: (state, action: PayloadAction<{token: string}>) => {
-        console.log("logging");
-        localStorage.setItem(TOKEN, action.payload.token);
-        state.isAuthenticated = true;
-        state.loading = false;
-      },
-      handleLogout: (state) => {
-        localStorage.removeItem(TOKEN);
-        state.token = "";
-        state.isAuthenticated = false;
-        state.loading = false;
-      }
+  name: 'Auth',
+  initialState: initialState,
+  reducers: {
+    handleLoadUser: (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload;
+    },
+    handleLogin: (state, action: PayloadAction<{token: string}>) => {
+      localStorage.setItem(TOKEN, action.payload.token);
+      state.isAuthenticated = true;
+      state.loading = false;
+    },
+    handleLogout: (state) => {
+      localStorage.removeItem(TOKEN);
+      state.token = "";
+      state.isAuthenticated = false;
+      state.loading = false;
     }
+  }
 });
 
 export const { handleLoadUser, handleLogin, handleLogout } = authSlice.actions;
 
 export default authSlice.reducer
-
 
 // not sure where to put all of these
 export const loadUser = (): AppThunk => async dispatch => {
@@ -136,9 +134,3 @@ export const login = (command: LoginModel): AppThunk => async dispatch => {
 export const logout = (): AppThunk => dispatch => {
 	dispatch(handleLogout());
 };
-
-export const testLogin = (): AppThunk => dispatch => {
-  console.log("testing to login");
-
-  dispatch(handleLogin({ token: "tokeennnnn" }));
-}

@@ -5,11 +5,9 @@ import PrivateRoute from './PrivateRoutes';
 import Landing from '../landing/Landing';
 
 const Routes: React.FC = () => 
-<section>
-  <Switch>
-    <Route exact path='/login' component={Login} />
-    <PrivateRoute exact path='/landing' component={Landing} />
-  </Switch>
-</section>
+<Switch>
+  <Route exact path='/login' component={Login} />
+  <PrivateRoute exact path='/landing' component={Landing} />
+</Switch>
 
 export default Routes;
