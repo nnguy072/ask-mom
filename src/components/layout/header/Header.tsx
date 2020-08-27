@@ -2,16 +2,12 @@ import React from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import store from '../../../store';
 
-type HeaderProps = {
-}
+const Header: React.FC = (): JSX.Element => {
+  const { isAuthenticated } = store.getState().Auth;
 
-export default class Header extends React.Component<HeaderProps> {
-  render(): JSX.Element {
-    const { isAuthenticated } = store.getState().Auth;
-    
-    let navItems: JSX.Element;
-    if (isAuthenticated) {
-      navItems = (          
+  let navItems: JSX.Element;
+  if (isAuthenticated) {
+    navItems = (
       <React.Fragment>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -27,22 +23,22 @@ export default class Header extends React.Component<HeaderProps> {
           </Nav>
         </Navbar.Collapse>
       </React.Fragment>
-      );
-    }
-    else {
-      navItems = (
-        <Nav className="ml-auto">
-          <Nav.Link href="/">Sign In</Nav.Link>
-        </Nav>
-      );
-    }
-
-    return (
-      <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
-        <Navbar.Brand href="/">Ask Mom</Navbar.Brand>
-
-        {navItems}
-      </Navbar>
     );
   }
+  else {
+    navItems = (
+      <Nav className="ml-auto">
+        <Nav.Link href="/">Sign In</Nav.Link>
+      </Nav>
+    );
+  }
+
+  return (
+    <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
+      <Navbar.Brand href="/">Ask Mom</Navbar.Brand>
+      {navItems}
+    </Navbar>
+  );
 }
+
+export default Header;
