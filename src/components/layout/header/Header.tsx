@@ -1,17 +1,19 @@
 import React from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import store from '../../../store';
 
 type HeaderProps = {
 }
 
 export default class Header extends React.Component<HeaderProps> {
-
   render(): JSX.Element {
-    return (
-      <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
-        <Navbar.Brand href="#home">Ask Mom</Navbar.Brand>
+    const { isAuthenticated } = store.getState().Auth;
+    
+    let navItems: JSX.Element;
+    if (isAuthenticated) {
+      navItems = (          
+      <React.Fragment>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Link href="/">Home</Nav.Link>
@@ -24,6 +26,22 @@ export default class Header extends React.Component<HeaderProps> {
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
+      </React.Fragment>
+      );
+    }
+    else {
+      navItems = (
+        <Nav className="ml-auto">
+          <Nav.Link href="/">Sign In</Nav.Link>
+        </Nav>
+      );
+    }
+
+    return (
+      <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
+        <Navbar.Brand href="/">Ask Mom</Navbar.Brand>
+
+        {navItems}
       </Navbar>
     );
   }

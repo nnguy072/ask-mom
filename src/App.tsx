@@ -5,10 +5,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Container from 'react-bootstrap/Container';
 import Header from './components/layout/header/Header';
-import Landing from './components/landing/Landing';
 import { useDispatch } from 'react-redux';
 import { loadUser } from './services/auth';
 import setAuthToken from './utils/setAuthToken';
+import Routes from './components/routing/Routes';
+import Blank from './components/auth/Blank';
 
 // doesn't seem like the right place to put it
 if (localStorage.token)
@@ -25,7 +26,8 @@ function App() {
         <div className="main-container">
           <Header />
           <Container fluid>
-            <Route exact path="/" component={Landing} />
+            <Route exact path="/" component={Blank} />
+            <Route component={Routes} />
           </Container>
         </div>
       </div>

@@ -29,6 +29,7 @@ const authSlice = createSlice({
         state.user = action.payload;
       },
       handleLogin: (state, action: PayloadAction<{token: string}>) => {
+        console.log("logging");
         localStorage.setItem(TOKEN, action.payload.token);
         state.isAuthenticated = true;
         state.loading = false;
@@ -135,3 +136,9 @@ export const login = (command: LoginModel): AppThunk => async dispatch => {
 export const logout = (): AppThunk => dispatch => {
 	dispatch(handleLogout());
 };
+
+export const testLogin = (): AppThunk => dispatch => {
+  console.log("testing to login");
+
+  dispatch(handleLogin({ token: "tokeennnnn" }));
+}
