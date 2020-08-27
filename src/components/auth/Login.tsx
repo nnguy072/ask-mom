@@ -40,7 +40,7 @@ const Login: React.FC = () => {
         <Card className="mt-3">
           <Card.Body>
             <div className="text-center">
-              <h1 className='large text-primary'>Sign In</h1>
+              <h1 className='large text-primary'>Ask Mom</h1>
               <p className='lead'>Sign Into Your Account</p>
 
               <Form onSubmit={e => onSubmit(e)}>
